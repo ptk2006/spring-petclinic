@@ -4,7 +4,7 @@ pipeline {
     stages {     
         stage('Maven Install') {
             agent {         
-                docker { image 'maven:3.8.3-openjdk-17' }
+                docker { image 'maven:3.8.1-adoptopenjdk-11' }
             }       
             steps {
                 sh 'mvn clean install'
