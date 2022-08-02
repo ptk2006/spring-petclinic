@@ -21,7 +21,7 @@ pipeline {
                     echo "Target instance IP: $INSTANCE"
 
                     withCredentials([sshUserPrivateKey(credentialsId: 'tls_private_key', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
-                        sh 'ssh -oStrictHostKeyChecking=no $SSH_USER@tf-target-02.westeurope.cloudapp.azure.com -i $SSH_KEY docker run -d -p 80:8080 $imagename:$BUILD_VERSION'
+                        sh 'ssh $SSH_USER@tf-target-02.westeurope.cloudapp.azure.com -i $SSH_KEY docker run -d -p 80:8080 $imagename:$BUILD_VERSION'
                     }
                 }
             }
