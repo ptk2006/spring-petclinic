@@ -26,7 +26,7 @@ pipeline {
                 sh 'docker login -u $dockerHubUser -p $dockerHubPassword'
                 // sh 'docker tag $imagename:$BUILD_NUMBER $imagename:latest'
                 sh 'docker push $imagename --all-tags'
-                sh 'docker rmi $(docker images -aq) || true'
+                sh 'docker rmi -f $(docker images -aq) || true'
                 }
             }
         }
