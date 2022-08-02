@@ -16,16 +16,17 @@ pipeline {
         stage('Docker Build') {
             agent {label 'Linux'}
             steps {
-                sh 'docker build -t $imagename:$BUILD_NUMBER .'
+                sh 'docker build -t $imagename:$BUILD_NUMBER -t $imagename:latest .'
             }
         }
         stage('Docker Push') {
             agent any
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dokcer_hub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-                sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
-                sh 'docker tag $imagename:$BUILD_NUMBER $imagename:latest'
-                sh 'docker push $imagename:latest'
+                sh 'docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}'
+                // sh 'docker tag $imagename:$BUILD_NUMBER $imagename:latest'
+                sh 'docker push $imagename --all-tags'
+                sh 'docker rmi $(docker images -aq)'
                 }
             }
         }
