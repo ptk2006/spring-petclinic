@@ -1,5 +1,8 @@
 #!groovy
 pipeline {
+    environment {
+        imagename = "ptk2006/spring-petclinic"
+    }
     agent none
     stages {     
         stage('Maven Install') {
@@ -13,7 +16,7 @@ pipeline {
         stage('Docker Build') {
             agent {label 'Linux'}
             steps {
-                sh 'docker build -t ptk2006/spring-petclinic:latest .'
+                sh 'docker build -t $imagename:$BUILD_NUMBER .'
             }
         }
         stage('Docker Push') {
@@ -21,7 +24,8 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dokcer_hub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
                 sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
-                sh 'docker push ptk2006/spring-petclinic:latest'
+                sh 'docker tag $imagename:$BUILD_NUMBER $imagename:latest'
+                sh 'docker push $imagename:$BUILD_NUMBER'
                 }
             }
         }
