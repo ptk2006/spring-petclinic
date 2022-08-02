@@ -21,7 +21,7 @@ pipeline {
                     echo "Target instance IP: $INSTANCE"
 
                     withCredentials([sshUserPrivateKey(credentialsId: 'tls_private_key', keyFileVariable: 'SSH_KEY', passphraseVariable: '', usernameVariable: 'SSH_USER')]) {
-                        sh 'ssh -oStrictHostKeyChecking=no -i $SSH_KEY $SSH_USER@${INSTANCE} docker run -d -p 80:8080 $imagename:$BUILD_VERSION'
+                        sh "ssh -oStrictHostKeyChecking=no -i $SSH_KEY $SSH_USER@$INSTANCE docker run -d -p 80:8080 $imagename:$BUILD_VERSION"
                     }
                 }
             }
