@@ -12,13 +12,13 @@ pipeline {
                 script {
                     if (env.TARGET_ENVIRONMENT == "DEV") {
                         echo "Deploying to DEV environment"
-                        INSTANCE = ${dev_instance}
+                        INSTANCE = env.dev_instance
                     } else if (env.TARGET_ENVIRONMENT == "QA") {
                         echo "Deploying to QA environment"
-                        INSTANCE = ${qa_instance}
+                        INSTANCE = env.qa_instance
                     }
 
-                    echo "Target instance IP: ${INSTANCE}"
+                    echo "Target instance IP: $INSTANCE"
 
                     withCredentials([sshUserPrivateKey(credentialsId: 'tls_private_key', keyFileVariable: 'SSH_KEY', passphraseVariable: '', usernameVariable: 'SSH_USER')]) {
                         sh 'ssh -oStrictHostKeyChecking=no -i $SSH_KEY $SSH_USER@$INSTANCE docker run -d -p 80:8080 $imagename:$BUILD_VERSION'
