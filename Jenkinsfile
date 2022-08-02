@@ -25,7 +25,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'dokcer_hub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
                 sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
                 sh 'docker tag $imagename:$BUILD_NUMBER $imagename:latest'
-                sh 'docker push $imagename:$BUILD_NUMBER'
+                sh 'docker push $imagename:latest'
                 }
             }
         }
