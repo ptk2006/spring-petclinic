@@ -51,9 +51,8 @@ pipeline {
                     sleep(15)
                     try {         
                         sh "curl -s --head  --request GET  $INSTANCE | grep '201'"
-                        return true
                     } catch (Exception e) {
-                        return false
+                        echo "Not good"
                     }
                 }
             }
