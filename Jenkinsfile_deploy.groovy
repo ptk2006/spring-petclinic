@@ -46,13 +46,15 @@ pipeline {
         //     }
         // }
         stage('Check Availability') {
-            steps {             
-                sleep(15)
-                try {         
-                    sh "curl -s --head  --request GET  $INSTANCE | grep '200'"
-                    return true
-                } catch (Exception e) {
-                    return false
+            steps {
+                script {             
+                    sleep(15)
+                    try {         
+                        sh "curl -s --head  --request GET  $INSTANCE | grep '200'"
+                        return true
+                    } catch (Exception e) {
+                        return false
+                    }
                 }
             }
         }
