@@ -3,16 +3,18 @@ pipeline {
     environment {
         imagename = "ptk2006/spring-petclinic"
         dev_instance = "tf-target-01.westeurope.cloudapp.azure.com"
-        qa_instance = "tf-target-02.westeurope.cloudapp.azure.com"        
+        qa_instance = "tf-target-02.westeurope.cloudapp.azure.com"
+        curl_command_template = "curl -o /dev/null -s -w '%{http_code}\n' http://"        
     }
     agent any
     stages {     
-        stage("Deploy artifacts") {
+        stage("Deploy image") {
             steps {
                 script {
                     if (env.TARGET_ENVIRONMENT == "DEV") {
                         echo "Deploying to DEV environment"
                         INSTANCE = env.dev_instance
+                        curl_command = "$curl_command_template$env.INSTANCE"
                     } else if (env.TARGET_ENVIRONMENT == "QA") {
                         echo "Deploying to QA environment"
                         INSTANCE = env.qa_instance
@@ -27,4 +29,17 @@ pipeline {
             }
         }
     }
+    stage('Check deploying') {
+            steps {
+            script {
+                echo "$curl_command"
+                if (env.curl_command == '200') {
+                    echo 'I only execute on the master branch'
+                } else {
+                    echo 'I execute elsewhere'
+                }
+            }
+        }
+    }
+    
 }

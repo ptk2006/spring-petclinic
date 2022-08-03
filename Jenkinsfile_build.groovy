@@ -14,7 +14,7 @@ pipeline {
             }
         }
         stage('Docker Build') {
-            agent {label 'Linux'}
+            agent any
             steps {
                 sh 'docker build -t $imagename:$BUILD_NUMBER -t $imagename:latest .'
             }
