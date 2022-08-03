@@ -21,6 +21,7 @@ pipeline {
                     }
 
                     echo "Target instance IP: $INSTANCE"
+                    echo "Build version: $BUILD_VERSION"
 
                     withCredentials([sshUserPrivateKey(credentialsId: 'tls_private_key', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
                         sh "ssh -oStrictHostKeyChecking=no $SSH_USER@$INSTANCE -i $SSH_KEY docker rm -f $containername || true"
