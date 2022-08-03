@@ -8,6 +8,7 @@ pipeline {
         curl_command_template = 'curl -o /dev/null -s -w %{http_code}\n http://'        
     }
     agent any
+    timeout(time: 15, unit: 'SECONDS')
     stages {     
         stage("Deploy image") {
             steps {
@@ -45,15 +46,17 @@ pipeline {
         //         }
         //     }
         // }
-        stage("Using curl example") {
-            steps {
-                script {
-                    final String url = "http://$INSTANCE"
-                    final String response = sh(script: "curl -s $url", returnStdout: true).trim()
-                    echo response
+        stage('Check Availability') {
+            steps {             
+                waitUntil {
+                    try {         
+                        sh "curl -s --head  --request GET  $INSTANCE | grep '200'"
+                        return true
+                    } catch (Exception e) {
+                        return false
+                    }
                 }
             }
         }
-    }    
-    
+    }
 }
