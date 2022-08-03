@@ -24,8 +24,8 @@ pipeline {
                     echo "Build version: $BUILD_VERSION"
 
                     withCredentials([sshUserPrivateKey(credentialsId: 'tls_private_key', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
-                        sh 'ssh -oStrictHostKeyChecking=no $SSH_USER@$INSTANCE -i $SSH_KEY docker rm -f $containername || true'
-                        sh 'ssh -oStrictHostKeyChecking=no $SSH_USER@$INSTANCE -i $SSH_KEY docker run --name $containername -d -p 80:8080 $imagename:$BUILD_VERSION'
+                        sh "ssh -oStrictHostKeyChecking=no $SSH_USER@$INSTANCE -i $SSH_KEY docker rm -f $containername || true"
+                        sh "ssh -oStrictHostKeyChecking=no $SSH_USER@$INSTANCE -i $SSH_KEY docker run --name $containername -d -p 80:8080 $imagename:$BUILD_VERSION"
                     }
                 }
             }
@@ -35,7 +35,7 @@ pipeline {
                 script {
                     // curl_command = '$curl_command_template$INSTANCE'
                     // echo "$curl_command"
-                    curl_answer = sh "curl -Is http://$INSTANCE | head -n 1 | grep -o -e 200 -e 301"
+                    curl_answer = sh "curl -Is http://$INSTANCE | head -n 1 | grep -o -e 200 -e 301 "
                     echo "&curl_answer"
                     if (env.curl_answer == '200') {
                         echo 'Site is working'
