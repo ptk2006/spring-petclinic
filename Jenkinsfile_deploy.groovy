@@ -5,7 +5,7 @@ pipeline {
         containername = "petclinic"
         dev_instance = "tf-target-01.westeurope.cloudapp.azure.com"
         qa_instance = "tf-target-02.westeurope.cloudapp.azure.com"
-        curl_command_template = "curl -o /dev/null -s -w '%{http_code}\n' http://"        
+        curl_command_template = 'curl -o /dev/null -s -w %{http_code}\n http://'        
     }
     agent any
     stages {     
@@ -33,9 +33,9 @@ pipeline {
         stage("Check deploying") {
             steps {
                 script {
-                    curl_command = "$curl_command_template$INSTANCE"
+                    curl_command = '$curl_command_template$INSTANCE'
                     echo "$curl_command"
-                    curl_answer = sh "$curl_command"
+                    curl_answer = sh '$curl_command'
                     ech0 "&curl_answer"
                     if (env.curl_answer == '200') {
                         echo 'Site is working'
