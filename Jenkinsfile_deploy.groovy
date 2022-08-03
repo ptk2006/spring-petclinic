@@ -28,18 +28,18 @@ pipeline {
                 }
             }
         }
-    }
-    stage('Check deploying') {
+        stage("Check deploying") {
             steps {
-            script {
-                echo "$curl_command"
-                if (env.curl_command == '200') {
-                    echo 'I only execute on the master branch'
-                } else {
-                    echo 'I execute elsewhere'
+                script {
+                    echo "$curl_command"
+                    if (env.curl_command == '200') {
+                        echo 'I only execute on the master branch'
+                    } else {
+                        echo 'I execute elsewhere'
+                    }
                 }
             }
         }
-    }
+    }    
     
 }
