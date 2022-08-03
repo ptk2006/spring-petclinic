@@ -33,9 +33,9 @@ pipeline {
         stage("Check deploying") {
             steps {
                 script {
-                    curl_command = '$curl_command_template$INSTANCE'
-                    echo "$curl_command"
-                    curl_answer = sh '$curl_command'
+                    #curl_command = '$curl_command_template$INSTANCE'
+                    #echo "$curl_command"
+                    curl_answer = sh 'curl -o /dev/null -s -w %{http_code}\n http://$INSTANCE'
                     ech0 "&curl_answer"
                     if (env.curl_answer == '200') {
                         echo 'Site is working'
