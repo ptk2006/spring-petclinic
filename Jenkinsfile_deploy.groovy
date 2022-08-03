@@ -30,18 +30,27 @@ pipeline {
                 }
             }
         }
-        stage("Check deploying") {
+        // stage("Check deploying") {
+        //     steps {
+        //         script {
+        //             // curl_command = '$curl_command_template$INSTANCE'
+        //             // echo "$curl_command"
+        //             curl_answer = sh "curl -Is http://$INSTANCE | head -n 1 | grep -o -e 200 -e 301 "
+        //             echo "&curl_answer"
+        //             if (env.curl_answer == '200') {
+        //                 echo 'Site is working'
+        //             } else {
+        //                 echo 'I execute elsewhere'
+        //             }
+        //         }
+        //     }
+        // }
+        stage("Using curl example") {
             steps {
                 script {
-                    // curl_command = '$curl_command_template$INSTANCE'
-                    // echo "$curl_command"
-                    curl_answer = sh "curl -Is http://$INSTANCE | head -n 1 | grep -o -e 200 -e 301 "
-                    echo "&curl_answer"
-                    if (env.curl_answer == '200') {
-                        echo 'Site is working'
-                    } else {
-                        echo 'I execute elsewhere'
-                    }
+                    final String url = "http://$INSTANCE"
+                    final String response = sh(script: "curl -s $url", returnStdout: true).trim()
+                    echo response
                 }
             }
         }
