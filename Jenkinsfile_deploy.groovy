@@ -50,7 +50,7 @@ pipeline {
                 script {             
                     sleep(15)
                     try {         
-                        sh "curl -s --head  --request GET  $INSTANCE | grep '201'"
+                        sh "curl -s --head  --request GET  $INSTANCE | grep '200'"
                     } catch (Exception e) {
                         echo "Not good"
                     }
