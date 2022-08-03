@@ -34,7 +34,9 @@ pipeline {
                 script {
                     curl_command = "$curl_command_template$INSTANCE"
                     echo "$curl_command"
-                    if (env.curl_command == '200') {
+                    curl_answer = sh "$curl_command"
+                    ech0 "&curl_answer"
+                    if (env.curl_answer == '200') {
                         echo 'Site is working'
                     } else {
                         echo 'I execute elsewhere'

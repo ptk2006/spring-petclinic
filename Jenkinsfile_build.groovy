@@ -27,6 +27,7 @@ pipeline {
                 // sh 'docker tag $imagename:$BUILD_NUMBER $imagename:latest'
                 sh 'docker push $imagename --all-tags'
                 sh 'docker rmi -f $(docker images -aq) || true'
+                echo 'Docker image bild is $BUILD_NUMBER'
                 }
             }
         }
