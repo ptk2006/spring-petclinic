@@ -35,7 +35,7 @@ pipeline {
                 script {             
                     sleep(15)
                     try {         
-                        sh "curl -s --head  --request GET  $INSTANCE | grep -e '200' -e '301'"
+                        sh "curl -s --head  --request GET  $INSTANCE | grep -e '208' -e '301'"
                     } catch (Exception e) {
                         error "Site isn't available"
                     }
