@@ -35,7 +35,7 @@ pipeline {
                 script {
                     // curl_command = '$curl_command_template$INSTANCE'
                     // echo "$curl_command"
-                    curl_answer = sh "curl -Is http://$INSTANCE | head -n 1 | grep -o -e 200 -e 301200 || true"
+                    curl_answer = sh "curl -Is http://$INSTANCE | head -n 1 | grep -o -e 200 -e 301"
                     ech0 "&curl_answer"
                     if (env.curl_answer == '200') {
                         echo 'Site is working'
