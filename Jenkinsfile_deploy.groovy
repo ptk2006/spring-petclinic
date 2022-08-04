@@ -25,7 +25,7 @@ pipeline {
                     withCredentials([sshUserPrivateKey(credentialsId: 'tls_private_key', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
                         sh "ssh -oStrictHostKeyChecking=no $SSH_USER@$INSTANCE -i $SSH_KEY docker rm -f $containername"
                         sh "ssh -oStrictHostKeyChecking=no $SSH_USER@$INSTANCE -i $SSH_KEY docker pull $imagename:$BUILD_VERSION || true"
-                        sleep(5)
+                        sleep(10)
                         sh "ssh -oStrictHostKeyChecking=no $SSH_USER@$INSTANCE -i $SSH_KEY docker run --name $containername -d -p 80:8080 $imagename:$BUILD_VERSION"
                     }
                 }
@@ -34,7 +34,7 @@ pipeline {
         stage('Check Availability') {
             steps {
                 script {             
-                    sleep(10)
+                    sleep(20)
                     try {         
                         sh "curl -s --head  --request GET  $INSTANCE | grep -e '200' -e '301'"
                     } catch (Exception e) {
