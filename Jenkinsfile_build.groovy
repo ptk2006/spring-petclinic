@@ -24,7 +24,6 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dokcer_hub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
                 sh 'docker login -u $dockerHubUser -p $dockerHubPassword'
-                // sh 'docker tag $imagename:$BUILD_NUMBER $imagename:latest'
                 sh 'docker push $imagename --all-tags'
                 sh 'docker rmi -f $(docker images -aq) || true'
                 echo 'Docker image bild is $BUILD_NUMBER'

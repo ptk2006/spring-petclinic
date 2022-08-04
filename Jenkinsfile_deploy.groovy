@@ -5,7 +5,6 @@ pipeline {
         containername = "petclinic"
         dev_instance = "tf-target-01.westeurope.cloudapp.azure.com"
         qa_instance = "tf-target-02.westeurope.cloudapp.azure.com"
-        curl_command_template = 'curl -o /dev/null -s -w %{http_code}\n http://'        
     }
     agent any
     stages {     
@@ -24,7 +23,8 @@ pipeline {
                     echo "Build version: $BUILD_VERSION"
 
                     withCredentials([sshUserPrivateKey(credentialsId: 'tls_private_key', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
-                        sh "ssh -oStrictHostKeyChecking=no $SSH_USER@$INSTANCE -i $SSH_KEY docker rm -f $containername || true"
+                        sh "ssh -oStrictHostKeyChecking=no $SSH_USER@$INSTANCE -i $SSH_KEY docker rm -f $containername"
+                        sh "ssh -oStrictHostKeyChecking=no $SSH_USER@$INSTANCE -i $SSH_KEY docker pull $imagename:$BUILD_VERSION || true"
                         sleep(5)
                         sh "ssh -oStrictHostKeyChecking=no $SSH_USER@$INSTANCE -i $SSH_KEY docker run --name $containername -d -p 80:8080 $imagename:$BUILD_VERSION"
                     }
