@@ -14,7 +14,7 @@ pipeline {
             }
         }
         stage('Docker Build') {
-            agent any
+            agent { label 'main' }
             steps {
                 sh 'docker build -t $imagename:$BUILD_NUMBER -t $imagename:latest .'
             }
