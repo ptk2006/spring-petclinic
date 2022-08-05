@@ -21,7 +21,7 @@ pipeline {
                         println "${lintResult}"
                         currentBuild.result = 'UNSTABLE'
                     }
-                    sh 'docker run --rm -i hadolint/hadolint < Dockerfile'
+                    sh 'docker run --rm -i hadolint/hadolint < Dockerfile | tee hadolint.log'
                 }
             }
         }
