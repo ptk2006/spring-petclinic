@@ -3,7 +3,7 @@ pipeline {
     environment {
         imagename = "ptk2006/spring-petclinic"
     }
-    agent none
+    agent any
     stages {     
         stage("Clone feature") {
             steps {
