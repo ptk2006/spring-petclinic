@@ -14,9 +14,10 @@ pipeline {
             steps {
                 script {
                     def lintResult = sh returnStdout: true, script: 'docker run --rm -i hadolint/hadolint < Dockerfile'
-                    if (lintResult.trim() == '') {
+                    try {
+                        lintResult
                         println 'Lint finished with no errors'
-                    } else {
+                    }catch (Exception e) {
                         println 'Error found in Lint'
                         println "${lintResult}"
                         currentBuild.result = 'UNSTABLE'
