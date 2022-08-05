@@ -14,7 +14,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        'docker run --rm -i hadolint/hadolint < Dockerfile'
+                        sh 'docker run --rm -i hadolint/hadolint < Dockerfile'
                         println 'Lint finished with no errors'
                     }catch (Exception e) {
                         println 'Error found in Lint'
