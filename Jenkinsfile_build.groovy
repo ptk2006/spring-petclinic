@@ -3,7 +3,7 @@ pipeline {
     environment {
         imagename = "ptk2006/spring-petclinic"
     }
-    agent none
+    agent { label 'main' }
     stages {     
         stage('Maven Install') {
             agent {         
@@ -14,13 +14,11 @@ pipeline {
             }
         }
         stage('Docker Build') {
-            agent { label 'main' }
             steps {
                 sh 'docker build -t $imagename:$BUILD_NUMBER -t $imagename:latest .'
             }
         }
         stage('Docker Push') {
-            agent any
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dokcer_hub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
                 sh 'docker login -u $dockerHubUser -p $dockerHubPassword'
