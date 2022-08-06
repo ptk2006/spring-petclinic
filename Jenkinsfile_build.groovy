@@ -11,14 +11,14 @@ pipeline {
             }
             steps {
                 withSonarQubeEnv('local-sq') {
-                        sh 'mvn clean package sonar:sonar'
+                    sh 'mvn clean package sonar:sonar'
                 }
             }
         }
         stage("Quality Gate") {
             agent { label 'main' }
             steps {
-                timeout(time: 2, unit: 'MINUTES')
+                timeout(time: 2, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
             }
