@@ -5,6 +5,25 @@ pipeline {
     }
     agent none
     stages {     
+        stage('build && SonarQube analysis') {
+            steps {
+                withSonarQubeEnv('local-sq') {
+                    // Optionally use a Maven environment you've configured already
+                    withMaven(maven:'Maven 3.5') {
+                        sh 'mvn clean package sonar:sonar'
+                    }
+                }
+            }
+        }
+        stage("Quality Gate") {
+            steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
+                    // true = set pipeline to UNSTABLE, false = don't
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }         
         stage('Maven Install') {
             agent {         
                 docker { image 'maven:3.8.6' }
