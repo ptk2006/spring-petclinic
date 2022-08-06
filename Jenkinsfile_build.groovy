@@ -6,6 +6,7 @@ pipeline {
     agent none
     stages {     
         stage('build && SonarQube analysis') {
+            agent { label 'main' }
             steps {
                 withSonarQubeEnv('local-sq') {
                     // Optionally use a Maven environment you've configured already
@@ -16,6 +17,7 @@ pipeline {
             }
         }
         stage("Quality Gate") {
+            agent { label 'main' }
             steps {
                 timeout(time: 10, unit: 'MINUTES') {
                     // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
